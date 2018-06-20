@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mm"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageView
+            android:id="@+id/dialog_car_img"
+            android:layout_width="wrap_content"
+            android:layout_height="260dp"
+            android:alpha="0.8"
+            android:cropToPadding="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/car" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="233dp"
+            android:orientation="horizontal"
+            android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/dialog_branch_img"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="130dp"
+                android:src="@drawable/a" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_car_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="0.2"
+            android:padding="20dp"
+            android:text="car"
+            android:textColor="#868686"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/dialog_car_num"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:padding="16dp"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="0.2"
+            android:padding="20dp"
+            android:text="Hours"
+            android:textColor="#868686"
+            android:textSize="14sp" /> />
+
+        <EditText
+            android:id="@+id/dialog_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1.5"
+            android:inputType="number"
+            android:textColor="#000000"
+            android:padding="16dp"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/myTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="0.2"
+            android:padding="20dp"
+            android:text="KM"
+            android:inputType="number"
+            android:textColor="#868686"
+            android:textSize="14dp" />
+
+        <EditText
+            android:id="@+id/dialog_KM"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:padding="20dp"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/Salery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:background="#f0f0f4"
+            android:paddingBottom="10dp"
+            android:paddingLeft="22dp"
+            android:paddingTop="10dp"
+            android:text="Salery"
+            android:textColor="#868686"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/dialog_pay_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/li"
+            android:layout_weight="0.2"
+            android:background="@color/cardview_dark_background"
+            android:paddingBottom="10dp"
+            android:paddingLeft="22dp"
+            android:paddingTop="10dp"
+            android:text="Pay"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+</LinearLayout>
