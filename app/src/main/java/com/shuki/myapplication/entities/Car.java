@@ -2,14 +2,15 @@ package com.shuki.myapplication.entities;
 
 public class Car  {
 
-    protected int id;
+    protected String id;
     protected int  branchID;
     protected int km;
     protected int modelID;
 
 
-    public Car(int id, int branchID, int km, CarModel model) {
+    public Car(String id, int branchID, int km, CarModel model) {
         this.id = id;
+
         this.branchID = branchID;
         this.km = km;
         this.modelID = model.getCodeModel();
@@ -28,11 +29,11 @@ public class Car  {
 
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -51,5 +52,6 @@ public class Car  {
     public void setKm(int km) {
         this.km = km;
     }
+
 
 }

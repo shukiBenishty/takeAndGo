@@ -3,6 +3,23 @@ package com.shuki.myapplication.entities;
 import com.shuki.myapplication.backend.BackendFactory;
 
 public class CarModel {
+    protected int codeModel;
+    protected String manufacturerName;
+    protected String modelName;
+    protected int engineCapacity;
+    protected GEAR_BOX gearBox;
+    protected int seating;
+    protected String imgUrl;
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+
 
     public CarModel(String manufacturerName, String modelName, int engineCapacity, GEAR_BOX gearBox, int seating) {
         this.manufacturerName = manufacturerName;
@@ -37,12 +54,6 @@ public class CarModel {
         this.seating = oldCarModel.seating;
     }
 
-    protected int codeModel;
-    protected String manufacturerName;
-    protected String modelName;
-    protected int engineCapacity;
-    protected GEAR_BOX gearBox;
-    protected int seating;
 
     public CarModel() {
     }

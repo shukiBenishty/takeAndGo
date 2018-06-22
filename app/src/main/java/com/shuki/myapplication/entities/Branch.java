@@ -7,6 +7,36 @@ import java.util.ArrayList;
 
 public class Branch  {
 
+    protected int id;
+    protected int numParkingSpaces;
+    protected String city;
+    protected String street;
+    protected int streetNumber;
+    protected String branchImgUrl;
+    private String branchName;
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+
+
+    public String getBranchName() {
+        return branchName;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getBranchImgUrl() {
+        return branchImgUrl;
+    }
+
+    public void setBranchImgUrl(String branchImgUrl) {
+        this.branchImgUrl = branchImgUrl;
+    }
+
+
     public Branch(int id, int numParkingSpaces, String city, String street, int streetNumber) {
         this.id = id;
         this.numParkingSpaces = numParkingSpaces;
@@ -33,11 +63,6 @@ public class Branch  {
         this.streetNumber = streetNumber;
     }
 
-    protected int id;
-    protected int numParkingSpaces;
-    protected String city;
-    protected String street;
-    protected int streetNumber;
 
     public String getCity() {
         return city;
@@ -87,7 +112,6 @@ public class Branch  {
     public String getAddress() {
         return this.street + ": " + this.streetNumber + ", " + this.city;
     }
-
 
 
 }

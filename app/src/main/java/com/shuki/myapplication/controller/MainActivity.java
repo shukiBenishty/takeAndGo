@@ -1,7 +1,11 @@
 package com.shuki.myapplication.controller;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -23,6 +27,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.shuki.myapplication.R;
+import com.shuki.myapplication.backend.BackendFactory;
+import com.shuki.myapplication.backend.DataSource;
+import com.shuki.myapplication.entities.Branch;
+import com.shuki.myapplication.entities.Car;
+import com.shuki.myapplication.entities.CarModel;
+import com.shuki.myapplication.entities.Order;
 import com.shuki.myapplication.fragments.BranchsFragment;
 import com.shuki.myapplication.fragments.CarsFragment;
 import com.shuki.myapplication.fragments.OrdersFragment;
@@ -31,17 +41,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static DataSource dataSource =  BackendFactory.getDataSource();
+    private static ArrayList<Order> orderList = new ArrayList<Order>();;
+    private static ArrayList<Branch> branchList = dataSource.getBranchList();
+    private static ArrayList<Car> carList = dataSource.getCarList();
+    private static ArrayList<CarModel> carModelList = dataSource.getCarModelList();
 
     public static Adapter adapter;
+    public static OrdersFragment ordersFragment;
+    public static CarsFragment carsFragment;
+    public static BranchsFragment brancesFragment;
     private DrawerLayout mDrawerLayout;
-    static TabLayout tabs;
+    public static TabLayout tabs;
     TabLayout.Tab tab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
 //        startService(new Intent(getBaseContext(), MyService.class)); com.example.shuki.takeandgo.MY_CUSTOM_INTENT
         setContentView(R.layout.activity_main);
+
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,30 +100,21 @@ public class MainActivity extends AppCompatActivity {
                         switch (menuItem.getItemId()) {
                             case R.id.nav_about:
                                 menuItem.setChecked(true);
-//                                onBackPressed();
-//                                changeFragement(about);
                                 break;
                             case R.id.nav_available_car:
                                 menuItem.setChecked(true);
                                 tab = tabs.getTabAt(2);
                                 tab.select();
-
-//                                onBackPressed();
-//                                changeFragement(car);
                                 break;
                             case R.id.nav_my_car:
                                 menuItem.setChecked(true);
                                 TabLayout.Tab tab = tabs.getTabAt(0);
                                 tab.select();
-//                                onBackPressed();
-//                                changeFragement(my);
                                 break;
                             case R.id.nav_send:
-//                                onBackPressed();
                                 sendEmail();
                                 break;
                             case R.id.nav_phone:
-//                                onBackPressed();
                                 phone();
                                 break;
                             case R.id.nav_exit:
@@ -122,21 +135,38 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Snackbar.make(v, "Hello Snackbar!",
                       Snackbar.LENGTH_LONG).show();
-                TabLayout.Tab tab = tabs.getTabAt(2);
-                tab.select();
+                        Notification.Builder nBuilder = new Notification.Builder(getBaseContext());
+                        nBuilder.setSmallIcon(R.drawable.ic_location);
+                        nBuilder.setContentTitle("Notification Title");
+                        nBuilder.setContentText("Notification Content");
+                        Object obj = getSystemService(Context.NOTIFICATION_SERVICE);
+                        NotificationManager notificationManager = (NotificationManager)obj;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            notificationManager.notify(1234, nBuilder.build());
+                        }
+                        TabLayout.Tab tab = tabs.getTabAt(2);
+                        tab.select();
             }
         });
     }
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new OrdersFragment(), "My Order");
-        adapter.addFragment(new BranchsFragment(), "Branchs");
-        adapter.addFragment(new CarsFragment(), "Cars");
+
+        ordersFragment =  new OrdersFragment(orderList, branchList, carList,  carModelList);
+        adapter.addFragment(ordersFragment, "My Order");
+
+        brancesFragment = new BranchsFragment(branchList);
+        adapter.addFragment(brancesFragment, "Branchs");
+
+        carsFragment = new CarsFragment(carList,  carModelList);
+        adapter.addFragment(carsFragment, "Cars");
+
         viewPager.setAdapter(adapter);
+
     }
 
-    static class Adapter extends FragmentPagerAdapter {
+    public static class Adapter extends FragmentPagerAdapter {
         public final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
         public final FragmentManager _manager;
