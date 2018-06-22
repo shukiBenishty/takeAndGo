@@ -83,7 +83,10 @@ public class DatabaseFirebase implements DataSource {
                 MainActivity.ordersFragment.adapter.notifyDataSetChanged();
 
 //                MainActivity.carsFragment.adapter.carList  =  cars;
+                MainActivity.carsFragment.branchList = branches;
+                MainActivity.carsFragment.updateSpinner();
                 MainActivity.carsFragment.adapter.branchList =  branches;
+
                 MainActivity.carsFragment.adapter.notifyDataSetChanged();
             }
 

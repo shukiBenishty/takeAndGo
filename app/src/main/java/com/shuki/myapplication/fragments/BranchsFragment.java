@@ -62,9 +62,9 @@ public class BranchsFragment extends Fragment {
         return recyclerView;
     }
 
-     public static void replaceFragment(){
+     public static void replaceFragment(int position){
         CarsFragment carsFragment =  (CarsFragment) MainActivity.adapter.mFragmentList.get(2);
-        carsFragment.branchSpiner.setSelection(4);
+        carsFragment.branchSpiner.setSelection(position + 1);
         MainActivity.adapter.notifyDataSetChanged();
         MainActivity.tabs.getTabAt(2).select();
     }
@@ -108,12 +108,14 @@ public class BranchsFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(BranchHolder holder, int position) {
+        public void onBindViewHolder(BranchHolder holder, final int position) {
             try {
                 final BranchHolder _holder = holder;
                 final Branch branch = branchList.get(position);
 
-                holder.parkingNum.setValue(branch.getStreetNumber());
+                holder.parkingNum.setMaxValue(branch.getNumParkingSpaces());
+                holder.parkingNum.setMinValue(branch.getNumParkingSpaces());
+                holder.parkingNum.setValue(branch.getNumParkingSpaces());
                 Picasso.get().load(branch.getBranchImgUrl())
                         .placeholder(R.drawable.default_branch)
                         .error(R.drawable.default_branch)
@@ -124,7 +126,7 @@ public class BranchsFragment extends Fragment {
                 holder.carLiatButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        replaceFragment();
+                        replaceFragment(position);
                         Snackbar.make(v, "Action is pressed",
                                 Snackbar.LENGTH_LONG).show();
 

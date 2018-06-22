@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private static DataSource dataSource =  BackendFactory.getDataSource();
     private static ArrayList<Order> orderList = new ArrayList<Order>();;
     private static ArrayList<Branch> branchList = dataSource.getBranchList();
-    private static ArrayList<Car> carList = dataSource.getCarList();
+    public static ArrayList<Car> carList = dataSource.getCarList();
     private static ArrayList<CarModel> carModelList = dataSource.getCarModelList();
 
     public static Adapter adapter;

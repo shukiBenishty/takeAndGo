@@ -1,4 +1,4 @@
-package com.shuki.myapplication.fragments;
+ package com.shuki.myapplication.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.shuki.myapplication.R;
+import com.shuki.myapplication.controller.MainActivity;
 import com.shuki.myapplication.entities.Branch;
 import com.shuki.myapplication.entities.Car;
 import com.shuki.myapplication.entities.CarModel;
@@ -26,9 +27,14 @@ import java.util.ArrayList;
 
 
 public class CarsFragment extends Fragment {
+
+    public static ArrayList<Branch> branchList = new ArrayList<Branch>();
+    public static ArrayList<Car> carList = new ArrayList<Car>();
+    public static ArrayList<CarModel> carModelList = new ArrayList<CarModel>();
     public static CarsAdapter adapter;
     public LinearLayout layout;
     public Spinner branchSpiner;
+    public static ArrayAdapter<String> spinnerAdapter;
 
     @SuppressLint("ValidFragment")
     public CarsFragment(ArrayList<Car> carList, ArrayList<CarModel> carModelList) {
@@ -42,7 +48,7 @@ public class CarsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         layout = (LinearLayout)inflater.inflate(R.layout.recycler_view_spinner, container, false);
-//
+
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.my_recycler_view2);
 
         recyclerView.setAdapter(adapter);
@@ -53,33 +59,82 @@ public class CarsFragment extends Fragment {
         recyclerView.setPadding(tilePadding, tilePadding, tilePadding, tilePadding);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
-        branchSpiner= (Spinner) layout.findViewById(R.id.spinner);
-//        branchSpiner.setPrompt("Select one option");
-        ArrayAdapter<String> spinnerAdapter =  new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item,
-                getContext().getResources().getStringArray(R.array.places));
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        initSpinner();
 
-        branchSpiner.setAdapter(spinnerAdapter);
-        branchSpiner.setSelection(-1);
-        branchSpiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                String branch = (String) adapterView.getAdapter().getItem(i);
-//                if(branch.equals("All")){
-//                    changeFragement(new openCarFragment());
-//                    return;}
-//                openCarsByBranchFragment fragment = new openCarsByBranchFragment();
-//                Bundle args = new Bundle();
-//                args.putString("branch", branch);
-//                fragment.setArguments(args);
-//                changeFragement(fragment);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0){}
-        });
         return layout;
+    }
+
+    public void updateSpinner(){
+        if (spinnerAdapter == null ) {
+            initSpinner();
+        }
+        else {
+            ArrayList<String> itemArray = new ArrayList<>();
+            itemArray.add("All");
+            for (Branch b : branchList){
+                itemArray.add(b.getBranchName());
+            }
+            spinnerAdapter.clear();
+            spinnerAdapter.addAll(itemArray);
+            spinnerAdapter.notifyDataSetChanged();
+        }
+
+    }
+    private void initSpinner() {
+        try {
+            branchSpiner = (Spinner) layout.findViewById(R.id.spinner);
+
+            ArrayList<String> itemArray = new ArrayList<>();
+            itemArray.add("All");
+            for (Branch b : branchList) {
+                itemArray.add(b.getBranchName());
+            }
+            spinnerAdapter = new ArrayAdapter<String>(getContext(),
+                    android.R.layout.simple_spinner_item, itemArray);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            branchSpiner.setAdapter(spinnerAdapter);
+            branchSpiner.setSelection(-1);
+            branchSpiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    try {
+                        String branchName = (String) adapterView.getAdapter().getItem(i);
+                        Branch branch = null;
+                        for (Branch b : branchList) {
+                            if (b.getBranchName().equals(branchName)) {
+                                branch = b;
+                                break;
+                            }
+                        }
+                        ArrayList<Car> carListTemp = new ArrayList<>();
+                        if (branchName.equals("All")) {
+                            carListTemp = MainActivity.carList;
+                        } else {
+                            for (Car c : MainActivity.carList) {
+                                if (c.getBranchID() == branch.getId())
+                                    carListTemp.add(c);
+                            }
+                        }
+
+
+                        CarsAdapter.carList = carListTemp;
+                        adapter.notifyDataSetChanged();
+                    } catch (Exception ex) {
+                        Log.d("", "");
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+
+                }
+            });
+        }
+        catch (Exception ex){
+            Log.d("","");
+        }
     }
 
 
@@ -102,6 +157,7 @@ public class CarsFragment extends Fragment {
         public ArrayList<Branch> branchList;
 
 
+
         public CarsAdapter(ArrayList<Car> cars, ArrayList<CarModel> models) {
             carList = cars;
             carModelList = models;
@@ -110,7 +166,9 @@ public class CarsFragment extends Fragment {
         @Override
         public CarHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new CarHolder(LayoutInflater.from(parent.getContext()), parent);
+
         }
+
 
         @Override
         public void onBindViewHolder(CarHolder holder, int position) {
@@ -129,7 +187,7 @@ public class CarsFragment extends Fragment {
                 holder.name.setText(carModel.getModelName());
             }
             catch (Exception ex){
-            Log.d("onBindViewHolder",ex.getMessage());
+                Log.d("onBindViewHolder",ex.getMessage());
             }
         }
 
